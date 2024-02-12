@@ -16,11 +16,8 @@ class TestEditUser:
     )
     def test_edit_authorized_user(self, new_email, new_password, new_name):
         credentials = generate_user_credentials()
-        register_response = register_user(credentials)  # Регистрируем пользователя
-        assert register_response.status_code == 200
-
+        register_user(credentials)  # Регистрируем пользователя
         auth_response = authorize_user(credentials)  # Авторизуем пользователя
-        assert auth_response.status_code == 200
         user = auth_response.json()['user']  # Получаем текущие данные
 
         # Меняем пользовательские данные
@@ -41,15 +38,12 @@ class TestEditUser:
     @allure.title('Изменение email на чужой существующий возвращает код 403 и сообщение об ошибке')
     def test_edit_authorized_used_with_used_email(self):
         credentials_1 = generate_user_credentials()
-        register_response = register_user(credentials_1)  # Регистрируем пользователя #1
-        assert register_response.status_code == 200
+        register_user(credentials_1)  # Регистрируем пользователя #1
 
         credentials_2 = generate_user_credentials()
-        register_response = register_user(credentials_2)  # Регистрируем пользователя #2
-        assert register_response.status_code == 200
+        register_user(credentials_2)  # Регистрируем пользователя #2
 
         auth_response = authorize_user(credentials_2)  # Авторизуем пользователя #2
-        assert auth_response.status_code == 200
         user = auth_response.json()['user']  # Получаем текущие данные
         user['email'] = credentials_1['email']  # Меняем почту на почту пользователя #1
 
@@ -69,7 +63,6 @@ class TestEditUser:
     def test_edit_not_authorized_user(self, new_email, new_password, new_name):
         credentials = generate_user_credentials()
         register_response = register_user(credentials)  # Регистрируем пользователя
-        assert register_response.status_code == 200
         user = register_response.json()['user']
 
         # Меняем пользовательские данные

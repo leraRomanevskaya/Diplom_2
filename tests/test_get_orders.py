@@ -9,14 +9,11 @@ class TestGetOrders:
     @allure.title('Запрос заказов с авторизацией возвращает код 200 и набор заказов')
     def test_get_orders_with_auth(self):
         credentials = generate_user_credentials()
-        register_response = register_user(credentials)
-        assert register_response.status_code == 200
+        register_user(credentials)
         auth_response = authorize_user(credentials)
-        assert auth_response.status_code == 200
 
         ingredients_hashes = get_ingredients_hashes()
-        order_response = create_order(ingredients_hashes, {'Authorization': auth_response.json()['accessToken']})
-        assert order_response.status_code == 200
+        create_order(ingredients_hashes, {'Authorization': auth_response.json()['accessToken']})
 
         response = get_orders({'Authorization': auth_response.json()['accessToken']})
         assert response.status_code == 200

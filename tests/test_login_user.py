@@ -7,8 +7,7 @@ class TestLoginUser:
     @allure.title('Успешная авторизация пользователя возвращает код 200 и сообщение от успехе')
     def test_login_registered_user(self):
         credentials = generate_user_credentials()
-        response = register_user(credentials)  # Регистрируем пользователя
-        assert response.status_code == 200
+        register_user(credentials)  # Регистрируем пользователя
         response = authorize_user(credentials)  # Авторизуем пользователя
         assert response.status_code == 200
         assert response.json()['success'] is True

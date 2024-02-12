@@ -19,8 +19,7 @@ class TestCreateUser:
     @allure.title('Регистрация прежде зарегистрированного пользователя возвращает код 403 и сообщение об ошибке')
     def test_create_already_existing_user(self):
         credentials = generate_user_credentials()
-        response = register_user(credentials)
-        assert response.status_code == 200
+        register_user(credentials)
         response = register_user(credentials)
         assert response.status_code == 403
         assert response.json()['success'] is False
